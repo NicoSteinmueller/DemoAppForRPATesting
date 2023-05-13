@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 
 <MudThemeProvider IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -6,19 +7,39 @@
 
 <PageTitle>DemoAppForRPATesting</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
 
-    <main>
-        <div class="top-row px-4 auth">
+<AuthorizeView>
+    <Authorized>
+        <MudToolBar>
+            <NavMenu/>
+        </MudToolBar>
+        <MudAppBar>
+            <MudSpacer/>
             <LoginDisplay/>
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+        </MudAppBar>
+        @Body
+    </Authorized>
+    <NotAuthorized>
+        nicht eingeloggt<br/>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        <MudLink Href="Identity/Account/Login">Login</MudLink>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code
+{
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await authenticationStateTask;
+
+        if (!authenticationState.User.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo($"/identity/account/login", true);
+        }
+    }
+
+}
