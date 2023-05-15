@@ -1,0 +1,12 @@
+@page "/SiteNotExists/{Site}"
+@attribute [AllowAnonymous]
+
+<MudText Typo="Typo.h1"> Die Seite @Site existiert nicht.</MudText>
+<MudButton Href="/" ButtonType="ButtonType.Reset" Size="Size.Large">zurück zum Dashboard</MudButton>
+
+@code {
+
+    [Parameter]
+    public string? Site { get; set; }
+    
+}

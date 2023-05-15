@@ -1,0 +1,47 @@
+@using System.Security.Claims
+<MudAppBar Elevation="1">
+    <MudLink Href="/" Underline="Underline.None" Color="Color.Default">DemoAppForRPATesting</MudLink>
+    <MudSpacer/>
+    
+    
+    <MudMenu Label="Auskunft" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
+        <MudMenuItem Href="SiteNotExists/Bankauskunft">Bankauskunft</MudMenuItem>
+        <MudMenuItem Href="Bestandsauskunft">Bankauskunft</MudMenuItem>
+    </MudMenu>
+    <MudMenu Label="Bearbeitung" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
+        <MudMenuItem Href="SiteNotExists/Adressänderung">Adressänderung</MudMenuItem>
+        <MudMenuItem Href="SiteNotExists/Kontoänderung">Kontoänderung</MudMenuItem>
+        <MudMenuItem Href="SiteNotExists/Namensänderung">Namensänderung</MudMenuItem>
+        <MudMenuItem Href="SiteNotExists/Sterbefall">Sterbefall</MudMenuItem>
+        <MudMenuItem Href="SiteNotExists/Betreuung">Betreuung</MudMenuItem>
+    </MudMenu>
+    <MudMenu Label="Statistik" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
+        <MudMenuItem Href="SiteNotExists/Änderungen">Änderungen</MudMenuItem>
+        <MudMenuItem Href="SiteNotExists/Dokumente">Dokumente</MudMenuItem>
+    </MudMenu>
+    
+    
+    <MudSpacer/>
+    <MudSpacer/>
+    <MudSpacer/>
+    
+    
+    <AuthorizeView>
+        <MudMenu FullWidth="false">
+            <ActivatorContent>
+                <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Primary">@context.User.Identity!.Name</MudChip>
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem Href="Identity/Account/Manage">Profile</MudMenuItem>
+                <MudMenuItem Href="Identity/Account/Manage/ChangePassword">Passwort ändern</MudMenuItem>
+                <MudMenuItem>
+                    <MudForm method="post" action="Identity/Account/Logout">
+                        <MudButton ButtonType="ButtonType.Submit">Ausloggen</MudButton>
+                    </MudForm>
+                </MudMenuItem>
+            </ChildContent>
+        </MudMenu>
+    </AuthorizeView>
+    
+    
+</MudAppBar>

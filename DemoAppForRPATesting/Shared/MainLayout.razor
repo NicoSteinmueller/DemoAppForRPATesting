@@ -11,11 +11,10 @@
 <AuthorizeView>
     <Authorized>
         <MudLayout>
-            <MudAppBar>
-                <MudSpacer/>
-                <LoginDisplay/>
-            </MudAppBar>
-            @Body
+            <AppBar/>
+            <MudMainContent>
+                @Body
+            </MudMainContent>
         </MudLayout>
     </Authorized>
     <NotAuthorized>
@@ -28,13 +27,13 @@
 @code
 {
     [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
     
     protected override async Task OnInitializedAsync()
     {
-        var authenticationState = await authenticationStateTask;
+        var authenticationState = await AuthenticationStateTask!;
 
-        if (authenticationState.User.Identity == null | !authenticationState.User.Identity.IsAuthenticated)
+        if (authenticationState.User.Identity == null | !authenticationState.User.Identity!.IsAuthenticated)
         {
             NavigationManager.NavigateTo($"/identity/account/login", true);
         }
