@@ -1,0 +1,63 @@
+@page "/Bestandsauskunft"
+@using System.ComponentModel.DataAnnotations
+@inject ISnackbar Snackbar
+
+<br/>
+<MudText Typo="Typo.h3" Align="Align.Center">Bestandsauskunft</MudText>
+<br/>
+<br/>
+
+<EditForm Model="@_model" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+    <DataAnnotationsValidator/>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="PANR" HelperText="Postabrechnungsnummer hier eingeben" @bind-Value="_model.Panr" For="@(() => _model.Panr)" Mask="@(new PatternMask("000"))" ErrorText="Postabrechnungnummer hier eingeben."/>
+                <MudTextField Label="PRNR" HelperText="Postrentennummer hier eingeben" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" Mask="@(new PatternMask("00000000a00000"))"  ErrorText="Postrentennummer hier eingeben."/>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Reset" Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" OnClick="Reset">
+                    <MudIcon Icon="@Icons.Material.Filled.Loop" Size="Size.Medium"/> Zurücksetzen
+                </MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Suchen
+                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowRight" Size="Size.Medium"/>
+                    </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</EditForm>
+
+
+
+
+@code {
+    BestandsauskunftSearchForm _model = new ();
+
+    public class BestandsauskunftSearchForm
+    {
+        [Required(ErrorMessage = "Postabrechnungnummer wird benötigt.")]
+        [StringLength(maximumLength:3, MinimumLength = 3)]
+        public string? Panr { get; set; }
+        
+        [Required(ErrorMessage = "Postrentennummer wird benötigt.")]
+        [StringLength(maximumLength:14, MinimumLength = 12, ErrorMessage = "Die PRNR ist unvollständig.")]
+        public string? Prnr { get; set; }
+    }
+    
+    
+    private void OnValidSubmit(EditContext context)
+    {
+        Snackbar.Add(_model.Panr);
+    }
+    
+    private void OnInvalidSubmit(EditContext context)
+    {
+        Snackbar.Add("Angaben ungültig.", Severity.Error);
+    }
+
+    private void Reset()
+    {
+        _model = new BestandsauskunftSearchForm();
+    }
+    
+}
