@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using DemoAppForRPATesting.Areas.Identity;
 using DemoAppForRPATesting.Data;
+using DemoAppForRPATesting.Repositories;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +22,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddMudServices();
 builder.Services.AddMudBlazorSnackbar();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<IPensionRepository, PensionRepository>();
 
 
 
