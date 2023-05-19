@@ -8,9 +8,6 @@ public class PensionRepository : IPensionRepository
 {
     private List<Pension> _pensions = new ();
 
-
-
-
     public void AddPension(Pension pension)
     {
         _pensions.Add(pension);
@@ -27,7 +24,7 @@ public class PensionRepository : IPensionRepository
     }
 
    
-    string CalculatePRNR(Person person)
+    string CalculatePrnr(Person person)
     {
         string birthDate = person.Birthday.ToString("ddMMyy");
         string lastName = person.LastName.ToUpper();
@@ -250,13 +247,6 @@ public class PensionRepository : IPensionRepository
             bankDetails9
         );
         _pensions.Add(pension9);
-        
-        
-        
-        
-        
-        
-        
         
         // Beispiel 10
         Address address10 = new Address("Ahornstraße", "15", "67890", "Musterstadt", "Deutschland");

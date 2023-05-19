@@ -1,0 +1,23 @@
+@using Attribute = DemoAppForRPATesting.Models.Attribute
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h4">@Title</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudTable Items="@Attributes" Dense="true" Outlined="true" Striped="true">
+            <RowTemplate>
+                <MudTd Style="text-align: right">@context.Name</MudTd>
+                <MudTd>@context.Value</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public List<Attribute>? Attributes { get; set; }
+    
+}

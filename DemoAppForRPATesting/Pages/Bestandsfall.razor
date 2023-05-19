@@ -1,0 +1,92 @@
+@page "/Bestandsfall/{Id}"
+@using DemoAppForRPATesting.Components
+@using DemoAppForRPATesting.Repositories
+@using Attribute = DemoAppForRPATesting.Models.Attribute
+@inject IPensionRepository PensionRepository
+
+<MudButton Href="Bestandsauskunft"><MudIcon Icon="@Icons.Material.Filled.KeyboardArrowLeft" Size="Size.Medium"/>Zurück</MudButton>
+<br/>
+<MudText Typo="Typo.h2" Align="Align.Center">Bestandsfall</MudText>
+<br/>
+
+@if (_isInitDone)
+{
+    <MudGrid>
+        <MudItem xs="12" sm="6">
+            <BestandsfallDatentabelle Title="Berechtigter" Attributes="Person"></BestandsfallDatentabelle>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <BestandsfallDatentabelle Title="Anschrift" Attributes="Address"></BestandsfallDatentabelle>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <BestandsfallDatentabelle Title="Rente" Attributes="Pension"></BestandsfallDatentabelle>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <BestandsfallDatentabelle Title="Konto" Attributes="BankDetails"></BestandsfallDatentabelle>
+        </MudItem>
+
+    </MudGrid>
+}
+else
+{
+    <MudProgressLinear Size="Size.Large" Indeterminate="true"/>
+}
+
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = null!;
+
+    bool _isInitDone;
+    List<Attribute>? Person { get; set; }
+    List<Attribute>? Pension { get; set; }
+    List<Attribute>? Address { get; set; }
+    List<Attribute>? BankDetails { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var pen = PensionRepository.FindById(Id);
+
+            Person = new List<Attribute>
+            {
+                new Attribute("Anrede", pen.Person.Salutation.ToString()),
+                new Attribute("Titel", pen.Person.Title),
+                new Attribute("Vorname", pen.Person.FirstName),
+                new Attribute("Nachname", pen.Person.LastName),
+                new Attribute("Geburtsdatum", pen.Person.Birthday.ToString("dd.MM.yyyy"))
+            };
+
+            Pension = new List<Attribute>
+            {
+                new Attribute("PANR", pen.PANR),
+                new Attribute("PRNR", pen.PRNR),
+                new Attribute("Art", pen.Type.ToString()),
+                new Attribute("Rentenausweis", pen.PensionCard.ToString()),
+                new Attribute("Auszahlungsart", pen.PayoutMethod.ToString()),
+                new Attribute("Rentenstatus", pen.PensionStatus.ToString())
+            };
+
+            Address = new List<Attribute>
+            {
+                new Attribute("Straße", pen.Person.Address.Street),
+                new Attribute("Hausnummer", pen.Person.Address.HouseNumber),
+                new Attribute("Postleitzahl", pen.Person.Address.ZipCode),
+                new Attribute("Ort", pen.Person.Address.City),
+                new Attribute("Land", pen.Person.Address.Country)
+            };
+
+            BankDetails = new List<Attribute>
+            {
+                new Attribute("Bank", pen.BankDetails.Bank),
+                new Attribute("IBAN", pen.BankDetails.IBAN)
+            };
+
+            _isInitDone = true;
+            await Task.Delay(5000); //TODO adjust
+            StateHasChanged();
+        }
+    }
+
+}
