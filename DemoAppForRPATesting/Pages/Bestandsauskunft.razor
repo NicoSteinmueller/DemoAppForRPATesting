@@ -1,19 +1,26 @@
 @page "/Bestandsauskunft"
 @using System.ComponentModel.DataAnnotations
-@inject ISnackbar Snackbar
+@using DemoAppForRPATesting.Repositories
+@inject IPensionRepository PensionRepository
+@inject NavigationManager NavigationManager
+
 
 <br/>
 <MudText Typo="Typo.h3" Align="Align.Center">Bestandsauskunft</MudText>
 <br/>
 <br/>
 
-<EditForm Model="@_model" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+<EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator/>
     <MudItem xs="12" sm="7">
         <MudCard>
             <MudCardContent>
                 <MudTextField Label="PANR" HelperText="Postabrechnungsnummer hier eingeben" @bind-Value="_model.Panr" For="@(() => _model.Panr)" Mask="@(new PatternMask("000"))" ErrorText="Postabrechnungnummer hier eingeben."/>
-                <MudTextField Label="PRNR" HelperText="Postrentennummer hier eingeben" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" Mask="@(new PatternMask("00000000a00000"))"  ErrorText="Postrentennummer hier eingeben."/>
+                <MudTextField Label="PRNR" HelperText="Postrentennummer hier eingeben" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" Mask="@(new PatternMask("00000000a00000"))" ErrorText="Postrentennummer hier eingeben."/>
+                @if (notFound)
+                {
+                    <MudText Color="Color.Error">Es wurde keine passende Rente gefunden.</MudText>
+                }
             </MudCardContent>
             <MudCardActions>
                 <MudButton ButtonType="ButtonType.Reset" Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" OnClick="Reset">
@@ -21,43 +28,47 @@
                 </MudButton>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Suchen
                     <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowRight" Size="Size.Medium"/>
-                    </MudButton>
+                </MudButton>
             </MudCardActions>
         </MudCard>
     </MudItem>
 </EditForm>
 
 
-
-
 @code {
-    BestandsauskunftSearchForm _model = new ();
+    bool notFound;
+    BestandsauskunftSearchForm _model = new();
 
     public class BestandsauskunftSearchForm
     {
         [Required(ErrorMessage = "Postabrechnungnummer wird benötigt.")]
-        [StringLength(maximumLength:3, MinimumLength = 3)]
-        public string? Panr { get; set; }
-        
+        [StringLength(maximumLength: 3, MinimumLength = 3, ErrorMessage = "Die PANR ist unvollständig.")]
+        public string Panr { get; set; } = "";
+
         [Required(ErrorMessage = "Postrentennummer wird benötigt.")]
-        [StringLength(maximumLength:14, MinimumLength = 12, ErrorMessage = "Die PRNR ist unvollständig.")]
-        public string? Prnr { get; set; }
+        [StringLength(maximumLength: 14, MinimumLength = 12, ErrorMessage = "Die PRNR ist unvollständig.")]
+        public string Prnr { get; set; } = "";
     }
-    
     
     private void OnValidSubmit(EditContext context)
     {
-        Snackbar.Add(_model.Panr);
-    }
-    
-    private void OnInvalidSubmit(EditContext context)
-    {
-        Snackbar.Add("Angaben ungültig.", Severity.Error);
+        notFound = false;
+        Task.Delay(1000).Wait(); //TODO adjust
+        var pension = PensionRepository.FindByPanrAndPrnr(_model.Panr!, _model.Prnr!);
+        if (pension == null)
+        {
+            notFound = true;
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/Bestandsfall/"+pension.Id);
+        }
     }
 
     private void Reset()
     {
         _model = new BestandsauskunftSearchForm();
+        notFound = false;
     }
     
 }
