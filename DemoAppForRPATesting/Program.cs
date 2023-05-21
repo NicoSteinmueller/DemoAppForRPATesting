@@ -8,6 +8,7 @@ using DemoAppForRPATesting.Areas.Identity;
 using DemoAppForRPATesting.Data;
 using DemoAppForRPATesting.Repositories;
 using MudBlazor.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,9 @@ builder.Services.AddMudServices();
 builder.Services.AddMudBlazorSnackbar();
 builder.Services.AddSingleton<IPensionRepository, PensionRepository>();
 
-
+Log.Logger = new LoggerConfiguration().Enrich.FromLogContext().WriteTo.File(@""+builder.Configuration.GetValue<string>("Logging:FilePath")+"\\"+DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss_")+"log.txt").CreateLogger();
+builder.Services.AddSerilog();
+Log.Information("Application started at: "+DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss") );
 
 var app = builder.Build();
 

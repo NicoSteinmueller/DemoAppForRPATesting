@@ -49,6 +49,9 @@
     {
         //TODO add input error
         _model = new AddressModel();
+        Log.Information("customLogging; Adressänderung; save Address to PANR: " +_model.Panr+ " and PRNR: " +_model.Prnr+
+                        "with Attributes: Street: " +_model.Street+ "; Number: " +_model.Number+ "; ZipCode: " +_model.ZipCode+ "; City: " +_model.City+
+                        "; MoveToAnotherCountry: " +_model.MoveToAnotherCountry+ "; Country: " +_model.Country);
     }
 
     public class AddressModel
@@ -84,5 +87,6 @@
     private void Reset()
     {
         _model = new AddressModel();
+        Log.Information("customLogging; Adressänderung; reset input Form");
     }
 }

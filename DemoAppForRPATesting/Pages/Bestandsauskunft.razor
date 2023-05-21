@@ -58,10 +58,12 @@
         if (pension == null)
         {
             notFound = true;
+            Log.Information("customLogging; Bestandsauskunft; Pension with PANR: "+_model.Panr+" and PRNR: "+_model.Prnr+" not found");
         }
         else
         {
             NavigationManager.NavigateTo("/Bestandsfall/"+pension.Id);
+            Log.Information("customLogging; Bestandsauskunft; Pension with PANR: "+_model.Panr+" and PRNR: "+_model.Prnr+" found and open");
         }
     }
 
@@ -69,6 +71,7 @@
     {
         _model = new BestandsauskunftSearchForm();
         notFound = false;
+        Log.Information("customLogging; Bestandsauskunft; reset input form");
     }
     
 }

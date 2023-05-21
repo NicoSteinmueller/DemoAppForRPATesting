@@ -36,6 +36,7 @@
         if (authenticationState.User.Identity == null | !authenticationState.User.Identity!.IsAuthenticated)
         {
             NavigationManager.NavigateTo($"/identity/account/login", true);
+            Log.Information("customLogging; MainLayout; User is not Authenticated");
         }
     }
 

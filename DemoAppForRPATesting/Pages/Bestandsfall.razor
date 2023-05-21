@@ -47,45 +47,47 @@ else
     {
         if (firstRender)
         {
+            Log.Information("customLogging; Bestandsfall; try to open: "+Id);
             var pen = PensionRepository.FindById(Id);
 
             Person = new List<Attribute>
             {
-                new Attribute("Anrede", pen.Person.Salutation.ToString()),
-                new Attribute("Titel", pen.Person.Title),
-                new Attribute("Vorname", pen.Person.FirstName),
-                new Attribute("Nachname", pen.Person.LastName),
-                new Attribute("Geburtsdatum", pen.Person.Birthday.ToString("dd.MM.yyyy"))
+                new ("Anrede", pen.Person.Salutation.ToString()),
+                new ("Titel", pen.Person.Title),
+                new ("Vorname", pen.Person.FirstName),
+                new ("Nachname", pen.Person.LastName),
+                new ("Geburtsdatum", pen.Person.Birthday.ToString("dd.MM.yyyy"))
             };
 
             Pension = new List<Attribute>
             {
-                new Attribute("PANR", pen.PANR),
-                new Attribute("PRNR", pen.PRNR),
-                new Attribute("Art", pen.Type.ToString()),
-                new Attribute("Rentenausweis", pen.PensionCard.ToString()),
-                new Attribute("Auszahlungsart", pen.PayoutMethod.ToString()),
-                new Attribute("Rentenstatus", pen.PensionStatus.ToString())
+                new ("PANR", pen.PANR),
+                new ("PRNR", pen.PRNR),
+                new ("Art", pen.Type.ToString()),
+                new ("Rentenausweis", pen.PensionCard.ToString()),
+                new ("Auszahlungsart", pen.PayoutMethod.ToString()),
+                new ("Rentenstatus", pen.PensionStatus.ToString())
             };
 
             Address = new List<Attribute>
             {
-                new Attribute("Straße", pen.Person.Address.Street),
-                new Attribute("Hausnummer", pen.Person.Address.HouseNumber),
-                new Attribute("Postleitzahl", pen.Person.Address.ZipCode),
-                new Attribute("Ort", pen.Person.Address.City),
-                new Attribute("Land", pen.Person.Address.Country.ToString())
+                new ("Straße", pen.Person.Address.Street),
+                new ("Hausnummer", pen.Person.Address.HouseNumber),
+                new ("Postleitzahl", pen.Person.Address.ZipCode),
+                new ("Ort", pen.Person.Address.City),
+                new ("Land", pen.Person.Address.Country.ToString())
             };
 
             BankDetails = new List<Attribute>
             {
-                new Attribute("Bank", pen.BankDetails.Bank),
-                new Attribute("IBAN", pen.BankDetails.IBAN)
+                new("Bank", pen.BankDetails.Bank),
+                new ("IBAN", pen.BankDetails.IBAN)
             };
 
             _isInitDone = true;
             await Task.Delay(5000); //TODO adjust
             StateHasChanged();
+            Log.Information("customLogging; Bestandsfall; open: "+Id);
         }
     }
 
