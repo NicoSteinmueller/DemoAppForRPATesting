@@ -1,0 +1,88 @@
+@page "/Adressänderung"
+@using System.ComponentModel.DataAnnotations
+@using DemoAppForRPATesting.Models.Enum
+
+<h3>Adressänderung</h3>
+
+<EditForm Model="@_model" OnValidSubmit="ValidSubmit">
+    <DataAnnotationsValidator/>
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <MudCard>
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="12" md="6">
+                        <MudTextField Label="PANR" @bind-Value="_model.Panr" For="@(() => _model.Panr)" Mask="@(new PatternMask("000"))"/>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudTextField Label="PRNR" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" Mask="@(new PatternMask("00000000a00000"))"/>
+                    </MudItem>
+                </MudGrid>
+
+                <MudTextField T="string" @bind-Value="@_model.Street" Label="Straße" For="@(() => _model.Street)"/>
+                <MudTextField T="string" @bind-Value="@_model.Number" Label="Hausnummer" For="@(() => _model.Number)"/>
+                <MudTextField T="string" @bind-Value="@_model.ZipCode" Label="Postleitzahl" Mask="@(new PatternMask("00000"))" For="@(() => _model.ZipCode)"/>
+                <MudTextField T="string" @bind-Value="@_model.City" Label="Stadt" For="@(() => _model.City)"/>
+                <br/>
+                <MudSwitch T="bool" @bind-Value="_model.MoveToAnotherCountry" Label="Verzug in ein anderes Land" For="@(() => _model.MoveToAnotherCountry)"/>
+                <MudSelect T="Country" Label="Land" @bind-Value="_model.Country" For="@(() => _model.Country)">
+                    @foreach (var country in Enum.GetValues(typeof(Country)).Cast<Country>())
+                    {
+                        <MudSelectItem Value="country">@country.ToString().Replace("_", " ")</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Reset" Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" OnClick="Reset">
+                    <MudIcon Icon="@Icons.Material.Filled.Loop" Size="Size.Medium"/> Zurücksetzen
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" >Speichern</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudContainer>
+</EditForm>
+
+
+@code {
+    private AddressModel _model = new ();
+
+    private void ValidSubmit()
+    {
+        //TODO add input error
+        _model = new AddressModel();
+    }
+
+    public class AddressModel
+    {
+        [Required(ErrorMessage = "Straße ist erforderlich")]
+        public string Street { get; set; } = "";
+
+        [Required(ErrorMessage = "Hausnummer ist erforderlich")]
+        public string Number { get; set; } = "";
+
+        [Required(ErrorMessage = "Postleitzahl ist erforderlich")]
+        [StringLength(maximumLength: 5, MinimumLength = 5, ErrorMessage = "Die Postleitzahl ist unvollsändig")]
+        public string ZipCode { get; set; } = "";
+
+        [Required(ErrorMessage = "Stadt ist erforderlich")]
+        public string City { get; set; } = "";
+        
+        [Required(ErrorMessage = "Verzug in anderes Land ist erforderlich")]
+        public bool MoveToAnotherCountry { get; set; }
+        
+        [Required(ErrorMessage = "Land ist erforderlich")]
+        public Country Country { get; set; } = Country.Deutschland;
+
+        [Required(ErrorMessage = "PANR ist erforderlich")]
+        [StringLength(maximumLength: 3, MinimumLength = 3, ErrorMessage = "Die PANR ist unvollständig")]
+        public string Panr { get; set; } = "";
+
+        [Required(ErrorMessage = "PRNR ist erforderlich")]
+        [StringLength(maximumLength: 14, MinimumLength = 14, ErrorMessage = "Die PRNR ist unvollständig")]
+        public string Prnr { get; set; } = "";
+    }
+
+    private void Reset()
+    {
+        _model = new AddressModel();
+    }
+}
