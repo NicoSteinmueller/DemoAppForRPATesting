@@ -1,8 +1,10 @@
+using DemoAppForRPATesting.Models.Enum;
+
 namespace DemoAppForRPATesting.Models;
 
 public class Address
 {
-    public Address(string street, string houseNumber, string zipCode, string city, string country)
+    public Address(string street, string houseNumber, string zipCode, string city, Country country)
     {
         Street = street;
         HouseNumber = houseNumber;
@@ -15,5 +17,5 @@ public class Address
     public string HouseNumber { get; set; }
     public string ZipCode { get; set; }
     public string City { get; set; }
-    public string Country { get; set; }
+    public Country Country { get; set; }
 }

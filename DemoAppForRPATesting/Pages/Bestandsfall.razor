@@ -74,7 +74,7 @@ else
                 new Attribute("Hausnummer", pen.Person.Address.HouseNumber),
                 new Attribute("Postleitzahl", pen.Person.Address.ZipCode),
                 new Attribute("Ort", pen.Person.Address.City),
-                new Attribute("Land", pen.Person.Address.Country)
+                new Attribute("Land", pen.Person.Address.Country.ToString())
             };
 
             BankDetails = new List<Attribute>
