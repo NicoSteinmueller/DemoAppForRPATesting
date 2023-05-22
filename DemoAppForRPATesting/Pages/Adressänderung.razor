@@ -47,11 +47,23 @@
 
     private void ValidSubmit()
     {
-        //TODO add input error
-        _model = new AddressModel();
-        Log.Information("customLogging; Adressänderung; save Address to PANR: " +_model.Panr+ " and PRNR: " +_model.Prnr+
+        Random random = new Random();
+
+        Task.Delay(random.Next(500, 5001)).Wait();
+        
+        if (random.NextDouble() < 0.1)
+        {
+            Log.Information("customLogging; Adressänderung; Error while save Address to PANR: " +_model.Panr+ " and PRNR: " +_model.Prnr+
+                            "with Attributes: Street: " +_model.Street+ "; Number: " +_model.Number+ "; ZipCode: " +_model.ZipCode+ "; City: " +_model.City+
+                            "; MoveToAnotherCountry: " +_model.MoveToAnotherCountry+ "; Country: " +_model.Country);
+        }
+        else
+        {
+            _model = new AddressModel();
+            Log.Information("customLogging; Adressänderung; save Address to PANR: " +_model.Panr+ " and PRNR: " +_model.Prnr+
                         "with Attributes: Street: " +_model.Street+ "; Number: " +_model.Number+ "; ZipCode: " +_model.ZipCode+ "; City: " +_model.City+
                         "; MoveToAnotherCountry: " +_model.MoveToAnotherCountry+ "; Country: " +_model.Country);
+        }
     }
 
     public class AddressModel

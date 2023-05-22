@@ -53,7 +53,8 @@
     private void OnValidSubmit(EditContext context)
     {
         notFound = false;
-        Task.Delay(1000).Wait(); //TODO adjust
+        Random random = new Random();
+        Task.Delay(random.Next(500, 5001)).Wait();
         var pension = PensionRepository.FindByPanrAndPrnr(_model.Panr!, _model.Prnr!);
         if (pension == null)
         {

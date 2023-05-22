@@ -32,8 +32,8 @@
                 <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Primary">@context.User.Identity!.Name</MudChip>
             </ActivatorContent>
             <ChildContent>
-                <MudMenuItem Href="Identity/Account/Manage">Profile</MudMenuItem>
-                <MudMenuItem Href="Identity/Account/Manage/ChangePassword">Passwort ändern</MudMenuItem>
+                <MudMenuItem Href="Identity/Account/Manage" ForceLoad="true">Profile</MudMenuItem>
+                <MudMenuItem Href="Identity/Account/Manage/ChangePassword" ForceLoad="true">Passwort ändern</MudMenuItem>
                 <MudMenuItem>
                     <MudForm method="post" action="Identity/Account/Logout">
                         <MudButton ButtonType="ButtonType.Submit">Ausloggen</MudButton>
