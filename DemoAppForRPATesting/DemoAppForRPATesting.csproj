@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>aspnet-DemoAppForRPATesting-E96D4157-AB03-4744-8D1A-D60A2A657654</UserSecretsId>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <ContainerImageName>DemoAppForRPATesting</ContainerImageName>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,15 +19,18 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5" />
+        <PackageReference Include="Microsoft.NET.Build.Containers" Version="7.0.302" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
-        <PackageReference Include="MudBlazor" Version="6.2.3" />
+        <PackageReference Include="MudBlazor" Version="6.2.5" />
         <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <ContainerPort Include="80" Type="tcp" />
     </ItemGroup>
+
+    <PropertyGroup>
+        <ContainerImageTag>0.1</ContainerImageTag>
+    </PropertyGroup>
 
 </Project>

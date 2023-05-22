@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using DemoAppForRPATesting.Areas.Identity;
 using DemoAppForRPATesting.Data;
@@ -25,7 +22,7 @@ builder.Services.AddMudServices();
 builder.Services.AddMudBlazorSnackbar();
 builder.Services.AddSingleton<IPensionRepository, PensionRepository>();
 
-Log.Logger = new LoggerConfiguration().Enrich.FromLogContext().WriteTo.File(@""+builder.Configuration.GetValue<string>("Logging:FilePath")+"\\"+DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss_")+"log.txt").CreateLogger();
+Log.Logger = new LoggerConfiguration().Enrich.FromLogContext().WriteTo.File(@""+builder.Configuration.GetValue<string>("Logging:FilePath")+DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss_")+"log.txt").CreateLogger();
 builder.Services.AddSerilog();
 Log.Information("Application started at: "+DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss") );
 

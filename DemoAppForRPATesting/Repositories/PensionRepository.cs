@@ -6,7 +6,7 @@ namespace DemoAppForRPATesting.Repositories;
 
 public class PensionRepository : IPensionRepository
 {
-    private List<Pension> _pensions = new ();
+    private readonly List<Pension> _pensions = new ();
 
     public void AddPension(Pension pension)
     {
@@ -23,8 +23,8 @@ public class PensionRepository : IPensionRepository
         return _pensions.Find(p => p.Id == id)!;
     }
 
-   
-    string CalculatePrnr(Person person)
+
+    private string CalculatePrnr(Person person)
     {
         string birthDate = person.Birthday.ToString("ddMMyy");
         string lastName = person.LastName.ToUpper();
@@ -53,7 +53,7 @@ public class PensionRepository : IPensionRepository
         int sum = 0;
         for (int i = 0; i < prnr.Length; i++)
         {
-            int digit = ConvertLetterToNumber(prnr.Substring(i, 1).ToCharArray()[0]);
+            int digit = ConvertLetterToNumber(prnr.Substring(i, 1)[0]);
             sum += digit * factors[i];
         }
         int checkDigit = sum % 10;
@@ -66,31 +66,21 @@ public class PensionRepository : IPensionRepository
         return prnr;
     }
 
-    
-    int ConvertLetterToNumber(char letter)
+
+    private int ConvertLetterToNumber(char letter)
     {
         if (char.IsLetter(letter))
         {
-            // Wandelt den Buchstaben in Großbuchstaben um, um eine einheitliche Repräsentation zu gewährleisten
             letter = char.ToUpper(letter);
 
-            // Berechnet den Offset vom ASCII-Wert des Buchstabens 'A' (65)
             int offset = letter - 'A';
-
-            // Fügt 1 zum Offset hinzu, um von 0-basierter Indexierung zu 1-basierter Indexierung zu wechseln
+            
             int number = offset + 1;
 
             return number;
         }
-        else
-        {
             return letter;
-        }
     }
-    
-    
-    
-    
     
     public PensionRepository()
     { 
@@ -1811,7 +1801,6 @@ public class PensionRepository : IPensionRepository
             bankDetails101
         );
         _pensions.Add(pension101);
-
 
     }
 }

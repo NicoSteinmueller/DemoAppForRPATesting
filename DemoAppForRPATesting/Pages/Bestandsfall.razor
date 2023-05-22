@@ -43,7 +43,7 @@ else
     List<Attribute>? Address { get; set; }
     List<Attribute>? BankDetails { get; set; }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {

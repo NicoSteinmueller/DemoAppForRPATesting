@@ -12,26 +12,28 @@
 
 <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator/>
-    <MudItem xs="12" sm="7">
-        <MudCard>
-            <MudCardContent>
-                <MudTextField Label="PANR" HelperText="Postabrechnungsnummer hier eingeben" @bind-Value="_model.Panr" For="@(() => _model.Panr)" Mask="@(new PatternMask("000"))" ErrorText="Postabrechnungnummer hier eingeben."/>
-                <MudTextField Label="PRNR" HelperText="Postrentennummer hier eingeben" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" Mask="@(new PatternMask("00000000a00000"))" ErrorText="Postrentennummer hier eingeben."/>
-                @if (notFound)
-                {
-                    <MudText Color="Color.Error">Es wurde keine passende Rente gefunden.</MudText>
-                }
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton ButtonType="ButtonType.Reset" Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" OnClick="Reset">
-                    <MudIcon Icon="@Icons.Material.Filled.Loop" Size="Size.Medium"/> Zurücksetzen
-                </MudButton>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Suchen
-                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowRight" Size="Size.Medium"/>
-                </MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <MudItem>
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="PANR" HelperText="Postabrechnungsnummer hier eingeben" @bind-Value="_model.Panr" For="@(() => _model.Panr)" Mask="@(new PatternMask("000"))" ErrorText="Postabrechnungnummer hier eingeben."/>
+                    <MudTextField Label="PRNR" HelperText="Postrentennummer hier eingeben" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" Mask="@(new PatternMask("00000000a00000"))" ErrorText="Postrentennummer hier eingeben."/>
+                    @if (notFound)
+                    {
+                        <MudText Color="Color.Error">Es wurde keine passende Rente gefunden.</MudText>
+                    }
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Reset" Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" OnClick="Reset">
+                        <MudIcon Icon="@Icons.Material.Filled.Loop" Size="Size.Medium"/> Zurücksetzen
+                    </MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Suchen
+                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowRight" Size="Size.Medium"/>
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudContainer>
 </EditForm>
 
 
