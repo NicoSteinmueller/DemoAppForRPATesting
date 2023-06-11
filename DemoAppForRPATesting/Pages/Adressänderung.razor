@@ -15,16 +15,16 @@
             <MudCardContent>
                 <MudGrid>
                     <MudItem xs="12" md="6">
-                        <MudTextField Label="PANR" @bind-Value="_model.Panr" For="@(() => _model.Panr)" Mask="@(new PatternMask("000"))"/>
+                        <MudTextField Label="PANR" @bind-Value="_model.Panr" For="@(() => _model.Panr)" />
                     </MudItem>
                     <MudItem xs="12" md="6">
-                        <MudTextField Label="PRNR" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" Mask="@(new PatternMask("00000000a00000"))"/>
+                        <MudTextField Label="PRNR" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" />
                     </MudItem>
                 </MudGrid>
 
                 <MudTextField T="string" @bind-Value="@_model.Street" Label="Straße" For="@(() => _model.Street)"/>
                 <MudTextField T="string" @bind-Value="@_model.Number" Label="Hausnummer" For="@(() => _model.Number)"/>
-                <MudTextField T="string" @bind-Value="@_model.ZipCode" Label="Postleitzahl" Mask="@(new PatternMask("00000"))" For="@(() => _model.ZipCode)"/>
+                <MudTextField T="string" @bind-Value="@_model.ZipCode" Label="Postleitzahl" For="@(() => _model.ZipCode)"/>
                 <MudTextField T="string" @bind-Value="@_model.City" Label="Stadt" For="@(() => _model.City)"/>
                 <br/>
                 <MudSwitch T="bool" @bind-Value="_model.MoveToAnotherCountry" Label="Verzug in ein anderes Land" For="@(() => _model.MoveToAnotherCountry)"/>
@@ -53,7 +53,7 @@
     {
         Random random = new Random();
 
-        Task.Delay(random.Next(500, 5001)).Wait();
+        Task.Delay(random.Next(500, 3001)).Wait();
         
         if (random.NextDouble() < 0.1)
         {

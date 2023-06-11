@@ -16,8 +16,8 @@
         <MudItem>
             <MudCard>
                 <MudCardContent>
-                    <MudTextField Label="PANR" HelperText="Postabrechnungsnummer hier eingeben" @bind-Value="_model.Panr" For="@(() => _model.Panr)" Mask="@(new PatternMask("000"))" ErrorText="Postabrechnungnummer hier eingeben."/>
-                    <MudTextField Label="PRNR" HelperText="Postrentennummer hier eingeben" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" Mask="@(new PatternMask("00000000a00000"))" ErrorText="Postrentennummer hier eingeben."/>
+                    <MudTextField Label="PANR" HelperText="Postabrechnungsnummer hier eingeben" @bind-Value="_model.Panr" For="@(() => _model.Panr)"  ErrorText="Postabrechnungnummer hier eingeben."/>
+                    <MudTextField Label="PRNR" HelperText="Postrentennummer hier eingeben" @bind-Value="_model.Prnr" For="@(() => _model.Prnr)" ErrorText="Postrentennummer hier eingeben."/>
                     @if (notFound)
                     {
                         <MudText Color="Color.Error">Es wurde keine passende Rente gefunden.</MudText>
@@ -44,11 +44,11 @@
     public class BestandsauskunftSearchForm
     {
         [Required(ErrorMessage = "Postabrechnungnummer wird benötigt.")]
-        [StringLength(maximumLength: 3, MinimumLength = 3, ErrorMessage = "Die PANR ist unvollständig.")]
+        [StringLength(maximumLength: 3, MinimumLength = 3, ErrorMessage = "Die PANR ist fehlerhaft.")]
         public string Panr { get; set; } = "";
 
         [Required(ErrorMessage = "Postrentennummer wird benötigt.")]
-        [StringLength(maximumLength: 14, MinimumLength = 12, ErrorMessage = "Die PRNR ist unvollständig.")]
+        [StringLength(maximumLength: 14, MinimumLength = 12, ErrorMessage = "Die PRNR ist fehlerhaft.")]
         public string Prnr { get; set; } = "";
     }
     
@@ -56,7 +56,7 @@
     {
         notFound = false;
         Random random = new Random();
-        Task.Delay(random.Next(500, 5001)).Wait();
+        Task.Delay(random.Next(500, 3001)).Wait();
         var pension = PensionRepository.FindByPanrAndPrnr(_model.Panr!, _model.Prnr!);
         if (pension == null)
         {

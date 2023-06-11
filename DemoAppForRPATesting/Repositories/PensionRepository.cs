@@ -1,6 +1,7 @@
 using DemoAppForRPATesting.Models;
 using DemoAppForRPATesting.Models.Enum;
 using System.Text;
+using System.Text.Json;
 
 namespace DemoAppForRPATesting.Repositories;
 
@@ -16,7 +17,7 @@ public class PensionRepository : IPensionRepository
 
     public Pension FindByPanrAndPrnr(string panr, string prnrPart)
     {
-        ConvertPensionsToCsv(_pensions);
+        //ConvertPensionsToCsv(_pensions);
         return _pensions.Find(p => p.PANR == panr && p.PRNR.Contains(prnrPart))!;
     }
 
@@ -1804,16 +1805,15 @@ public class PensionRepository : IPensionRepository
         );
         _pensions.Add(pension101);
         //ConvertPensionsToCsv(_pensions);
+        //ConvertPensionsToJson(_pensions);
     }
     
     public void ConvertPensionsToCsv(List<Pension> pensions)
     {
         StringBuilder csvBuilder = new StringBuilder();
-
-        // Headerzeile
-        csvBuilder.AppendLine("ID,Anrede,Titel,Vorname,Nachname,Geburtsdatum,Straße,Hausnummer,PLZ,Stadt,Land,PANR,PRNR,Type,RentenAusweis,RentenStatus,Auszahlungsmethode,Bank,IBAN");
-
-        // Datensätze
+        
+        csvBuilder.AppendLine("id,salutation,title,firstName,lastName,birthday,street,houseNumber,zipCode,city,country,panr,prnr,type,pensionCard,pensionStatus,payoutMethod,bank,iban");
+        
         foreach (Pension pension in pensions)
         {
             string line = $"{pension.Id},{pension.Person.Salutation},{pension.Person.Title},{pension.Person.FirstName},{pension.Person.LastName},{pension.Person.Birthday:dd.MM.yyyy}," +
@@ -1821,10 +1821,61 @@ public class PensionRepository : IPensionRepository
                           $"{pension.PANR},{pension.PRNR},{pension.Type},{pension.PensionCard},{pension.PensionStatus},{pension.PayoutMethod},{pension.BankDetails.Bank},{pension.BankDetails.IBAN}";
             csvBuilder.AppendLine(line);
         }
-
-        // CSV-Datei speichern
-        File.WriteAllText("C:\\Users\\nicos\\Git\\DemoAppForRPATesting\\pensions.csv", csvBuilder.ToString());
-        Console.WriteLine("file created");
+        
+        File.WriteAllText("C:\\Users\\nicos\\Git\\DemoAppForRPATesting\\DemoAppForRPATesting\\Data\\pensions.csv", csvBuilder.ToString());
+        Console.WriteLine("Csv-file created");
     }
+    
+    
+public void ConvertPensionsToJson(List<Pension> pensions)
+{
+    List<Dictionary<string, object>> jsonData = new List<Dictionary<string, object>>();
+
+    foreach (Pension pension in pensions)
+    {
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            {
+                "person", new Dictionary<string, object>
+                {
+                    { "salutation", pension.Person.Salutation.ToString() },
+                    { "title", pension.Person.Title },
+                    { "firstName", pension.Person.FirstName },
+                    { "lastName", pension.Person.LastName },
+                    { "birthday", pension.Person.Birthday.ToString("dd.MM.yyyy") },
+                }
+            },
+            {
+                "addressOld", new Dictionary<string, object>
+                {
+                    { "street", pension.Person.Address.Street },
+                    { "houseNumber", pension.Person.Address.HouseNumber },
+                    { "zipCode", pension.Person.Address.ZipCode },
+                    { "city", pension.Person.Address.City },
+                    { "country", pension.Person.Address.Country.ToString().Replace("_"," ") },
+                }
+            },
+            {
+                "addressNew", new Dictionary<string, object>
+                {
+                    { "street", "" },
+                    { "houseNumber", "" },
+                    { "zipCode", "" },
+                    { "city", "" },
+                    { "country", "" },
+                }
+            },
+            { "panr", pension.PANR },
+            { "prnr", pension.PRNR }
+        };
+
+        jsonData.Add(data);
+    }
+
+    string json = JsonSerializer.Serialize(jsonData, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+
+    File.WriteAllText("C:\\Users\\nicos\\Git\\DemoAppForRPATesting\\DemoAppForRPATesting\\Data\\pensions.json", json);
+    Console.WriteLine("Json-file created");
+}
     
 }
